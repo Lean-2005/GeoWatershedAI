@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>GeoWatershed AI — Watershed Decision Dashboard</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo-dot"></span>
+      <div>
+        <h1>GeoWatershed AI</h1>
+        <p>Geospatial Intelligence for Watershed Development · SIH 2026 · PS 26015</p>
+      </div>
+    </div>
+    <div class="api-status" id="apiStatus">checking backend…</div>
+  </header>
+
+  <main class="layout">
+    <section class="map-panel">
+      <div id="map"></div>
+      <div class="map-controls panel">
+        <h3>Map layers</h3>
+        <label><input type="checkbox" id="layerBoundary" checked> Watershed boundary</label>
+        <label><input type="checkbox" id="layerDrainage" checked> Drainage network</label>
+        <label><input type="checkbox" id="layerLanduse" checked> Land use zones</label>
+        <label><input type="checkbox" id="layerWater" checked> Waterbodies</label>
+        <label><input type="checkbox" id="layerThematic"> Thematic classification (NDVI/NDWI)</label>
+        <label><input type="checkbox" id="layerChange"> Change detection (before → after)</label>
+        <label><input type="checkbox" id="layerHotspots" checked> Priority hotspots</label>
+        <label><input type="checkbox" id="layerEvidence" checked> Field evidence photos</label>
+      </div>
+    </section>
+
+    <aside class="side-panel">
+      <div class="panel">
+        <h3>1 · Data sources</h3>
+        <p class="muted">Synthetic Sentinel-2-style before/after scene generated over the demo AOI.</p>
+        <button id="btnGenerate">Generate satellite scenes</button>
+      </div>
+
+      <div class="panel">
+        <h3>2 · Spatial analysis</h3>
+        <div class="btn-row">
+          <button id="btnAnalyzeBefore">Analyze "before"</button>
+          <button id="btnAnalyzeAfter">Analyze "after"</button>
+        </div>
+        <div id="indexStats" class="stats"></div>
+      </div>
+
+      <div class="panel">
+        <h3>3 · Change detection</h3>
+        <button id="btnChange">Run change detection</button>
+        <div id="changeStats" class="stats"></div>
+      </div>
+
+      <div class="panel">
+        <h3>4 · Priority hotspots</h3>
+        <button id="btnHotspots">Find intervention hotspots</button>
+        <ol id="hotspotList" class="hotspot-list"></ol>
+      </div>
+
+      <div class="panel">
+        <h3>5 · Field evidence upload</h3>
+        <form id="evidenceForm">
+          <input type="file" id="evFile" accept="image/*" required />
+          <div class="btn-row">
+            <input type="number" step="0.0001" id="evLat" placeholder="Latitude" required />
+            <input type="number" step="0.0001" id="evLon" placeholder="Longitude" required />
+          </div>
+          <input type="date" id="evDate" />
+          <input type="text" id="evNotes" placeholder="Field notes (optional)" />
+          <button type="submit">Validate &amp; upload</button>
+        </form>
+        <div id="evidenceResult" class="stats"></div>
+        <div id="evidenceCounts" class="muted"></div>
+      </div>
+
+      <div class="panel">
+        <h3>6 · Decision report</h3>
+        <p class="muted">Generates a PDF combining evidence, indices, change detection and hotspots.</p>
+        <button id="btnReport">Generate PDF report</button>
+      </div>
+    </aside>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
